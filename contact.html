@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Rodi LESUR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="vignette"></div>
+<div class="scanlines"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="blip"></span>RL/</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="competences.html">Compétences</a></li>
+    <li><a href="parcours.html">Parcours</a></li>
+    <li><a href="projets.html">Projets</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <button class="nav-burger">☰</button>
+  <a href="contact.html" class="nav-cta">Me recruter</a>
+</nav>
+
+<div class="page-head reveal">
+  <div class="page-eyebrow"><span class="blip"></span>04 — Recruter Rodi</div>
+  <h1 class="page-title">Travaillons <span class="accent">ensemble</span></h1>
+  <p class="page-desc">Je suis à la recherche d'une alternance en informatique pour 2026-2028. N'hésitez pas à me contacter directement via le formulaire ou via mes réseaux.</p>
+</div>
+
+<section class="sec reveal">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>Disponible dès<br>septembre 2026</h3>
+      <p>Je réponds rapidement par email ou téléphone. Ouvert à toute opportunité d'alternance en informatique.</p>
+      <div class="cinfo-links">
+        <a href="mailto:lesur_r@etna-alternance.net" class="cinfo-link">✉️ lesur_r@etna-alternance.net</a>
+        <a href="tel:0786746024" class="cinfo-link">📞 07 86 74 60 24</a>
+        <a href="https://linkedin.com/in/rodilesur/" class="cinfo-link" target="_blank">💼 linkedin.com/in/rodilesur</a>
+        <a href="https://github.com/RodiLesur94" class="cinfo-link" target="_blank">💻 github.com/RodiLesur94</a>
+      </div>
+    </div>
+    <div>
+      <form class="contact-form" onsubmit="sendForm(event)">
+        <div class="cf-row">
+          <div class="cf-field">
+            <label>Prénom / Nom</label>
+            <input type="text" id="cf-name" placeholder="Marie Dupont" required>
+          </div>
+          <div class="cf-field">
+            <label>Entreprise</label>
+            <input type="text" id="cf-company" placeholder="Acme Corp">
+          </div>
+        </div>
+        <div class="cf-field">
+          <label>Email</label>
+          <input type="email" id="cf-email" placeholder="recruteur@acme.com" required>
+        </div>
+        <div class="cf-field">
+          <label>Message</label>
+          <textarea id="cf-msg" placeholder="Bonjour Rodi, nous recherchons un alternant pour..." required></textarea>
+        </div>
+        <button type="submit" id="cf-submit">Envoyer le message ✉</button>
+        <div class="cf-status" id="cf-status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="sec-tight reveal">
+  <div class="page-nav-cards">
+    <a href="projets.html" class="page-nav-card">
+      <span class="pnc-dir">← Retour</span>
+      <span class="pnc-title">Projets</span>
+    </a>
+    <a href="index.html" class="page-nav-card pnc-next">
+      <span class="pnc-dir">Retour</span>
+      <span class="pnc-title">Accueil →</span>
+    </a>
+  </div>
+</div>
+
+<footer>Rodi LESUR — Portfolio 2026 · ETNA Ivry-Sur-Seine</footer>
+
+<script src="transitions.js"></script>
+<script>
+async function sendForm(e){
+  e.preventDefault();
+  const btn=document.getElementById('cf-submit');
+  const st=document.getElementById('cf-status');
+  const name=document.getElementById('cf-name').value.trim();
+  const company=document.getElementById('cf-company').value.trim();
+  const email=document.getElementById('cf-email').value.trim();
+  const msg=document.getElementById('cf-msg').value.trim();
+
+  btn.textContent='Envoi en cours...';
+  btn.disabled=true;
+
+  try{
+    const res=await fetch('https://formspree.io/f/xwpbopqr',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({name,company,email,message:msg,_subject:`[Portfolio] Message de ${name}${company?' ('+company+')':''}`})
+    });
+    if(res.ok){
+      st.textContent='✓ Message envoyé ! Je vous répondrai très vite.';
+      st.className='cf-status cf-ok';
+      e.target.reset();
+    } else {
+      throw new Error();
+    }
+  } catch(_){
+    st.textContent='⚠ Erreur d\'envoi. Contactez-moi directement par email.';
+    st.className='cf-status cf-err';
+  }
+
+  btn.textContent='Envoyer le message ✉';
+  btn.disabled=false;
+}
+</script>
+</body>
+</html>
